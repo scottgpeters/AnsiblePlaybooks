@@ -1,0 +1,16 @@
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Allow release-info to change for APT repositories
+      command: apt-get update -y --allow-releaseinfo-change
+
+    - name: Update cache
+      apt:
+        update_cache: yes
+          
+    - name: Upgrade all packages on servers
+      apt:
+        name: "*"
+        state: latest
+
