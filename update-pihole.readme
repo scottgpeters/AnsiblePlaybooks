@@ -1,0 +1,13 @@
+In this playbook, we define a play called "Update Pi-hole" that targets the hosts specified under the pihole_servers group. The become: true directive is used to elevate privileges and execute tasks with administrative rights.
+
+The playbook consists of two tasks:
+
+Update Pi-hole: This task uses the apt module to update the Pi-hole package. The name parameter is set to "pihole" and state is set to "latest" to ensure the package is updated to the latest available version. The update_cache parameter is set to "yes" to update the local package cache before updating. The result of this task is stored in the pihole_update_result variable.
+
+Restart Pi-hole service: This task uses the service module to restart the Pi-hole FTL (Faster Than Light) service. It is executed only when the previous task (pihole_update_result.changed) reports a change, indicating that an update was performed. The name parameter is set to "pihole-FTL" to specify the service to restart, and state is set to "restarted" to ensure the service is restarted if it is running.
+
+Make sure to replace pihole_servers with the appropriate host or group name from your Ansible inventory file. You can save this playbook in a file, for example, update_pihole.yaml, and run it using the ansible-playbook command:
+
+ansible-playbook -i inventory.ini update_pihole.yaml
+
+Remember to replace inventory.ini with the path to your Ansible inventory file containing the Pi-hole server(s) you want to update.
