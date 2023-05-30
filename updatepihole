@@ -1,0 +1,18 @@
+---
+- name: Update Pi-hole
+  hosts: pihole_servers
+  become: true
+
+  tasks:
+    - name: Update Pi-hole
+      apt:
+        name: pihole
+        state: latest
+        update_cache: yes
+      register: pihole_update_result
+
+    - name: Restart Pi-hole service
+      service:
+        name: pihole-FTL
+        state: restarted
+      when: pihole_update_result.changed
